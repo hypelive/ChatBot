@@ -5,6 +5,21 @@ public class ChatBot
 {
     private String name;
     private boolean alive;
+    private static HashMap<String, String> holydayFood;
+    static {
+        holydayFood = new HashMap<>();
+        holydayFood.put("new year", "olivye it's all of you need");
+        holydayFood.put("birthday", "mashed potatoes with chicken and compote");
+        holydayFood.put("valentine's day", "spaghetti");
+        holydayFood.put("1st september", "cake");
+        holydayFood.put("christmas", "turkey");
+        holydayFood.put("thanksgiving day", "turkey");
+        holydayFood.put("maslenitsa", "pancakes");
+        holydayFood.put("1st may", "pie");
+        holydayFood.put("9st may", "buckwheat with meat");
+        holydayFood.put("1st april", "explosive pie");
+        holydayFood.put("russia day", "borch");
+    }
     public HashMap<String, Function<String, String>> Commands = new HashMap<>();
 
     public String echo(String txt)
@@ -33,23 +48,9 @@ public class ChatBot
         return "bye";
     }
 
-    public String rap(String txt)
+    public String getHolidayFood(String arg)
     {
-        //generate_text();
-        return "To be, or not to be: that is the question:\n" +
-                "Whether 'tis nobler in the mind to suffer\n" +
-                "The slings and arrows of outrageous fortune,\n" +
-                "Or to take arms against a sea of troubles,\n" +
-                "And by opposing end them? To die: to sleep;\n" +
-                "No more; and by a sleep to say we end\n" +
-                "The heart-ache and the thousand natural shocks\n" +
-                "That flesh is heir to, 'tis a consummation\n" +
-                "Devoutly to be wish'd. To die, to sleep;\n" +
-                "To sleep: perchance to dream: ay, there's the rub;\n" +
-                "For in that sleep of death what dreams may come\n" +
-                "When we have shuffled off this mortal coil,\n" +
-                "Must give us pause: there's the respect\n" +
-                "That makes calamity of so long life;";
+        return holydayFood.get(arg);
     }
 
     public boolean is_alive()
@@ -66,7 +67,7 @@ public class ChatBot
         Commands.put("getName", this::getName);
         Commands.put("help", this::help);
         Commands.put("bye", this::bye);
-        Commands.put("rap", this::rap);
+        Commands.put("holiday", this::getHolidayFood);
 
     }
 }
