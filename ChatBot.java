@@ -5,20 +5,20 @@ public class ChatBot
 {
     private String name;
     private boolean alive;
-    private static HashMap<String, String> holydayFood;
+    private static HashMap<String, String> holidayFood;
     static {
-        holydayFood = new HashMap<>();
-        holydayFood.put("new year", "olivye it's all of you need");
-        holydayFood.put("birthday", "mashed potatoes with chicken and compote");
-        holydayFood.put("valentine's day", "spaghetti");
-        holydayFood.put("1st september", "cake");
-        holydayFood.put("christmas", "turkey");
-        holydayFood.put("thanksgiving day", "turkey");
-        holydayFood.put("maslenitsa", "pancakes");
-        holydayFood.put("1st may", "pie");
-        holydayFood.put("9st may", "buckwheat with meat");
-        holydayFood.put("1st april", "explosive pie");
-        holydayFood.put("russia day", "borch");
+        holidayFood = new HashMap<>();
+        holidayFood.put("new year", "olivye it's all of you need");
+        holidayFood.put("birthday", "mashed potatoes with chicken and compote");
+        holidayFood.put("valentine's day", "spaghetti");
+        holidayFood.put("1st september", "cake");
+        holidayFood.put("christmas", "turkey");
+        holidayFood.put("thanksgiving day", "turkey");
+        holidayFood.put("maslenitsa", "pancakes");
+        holidayFood.put("1st may", "pie");
+        holidayFood.put("9st may", "buckwheat with meat");
+        holidayFood.put("1st april", "explosive pie");
+        holidayFood.put("russia day", "borsch");
     }
     public HashMap<String, Function<String, String>> Commands = new HashMap<>();
 
@@ -50,10 +50,10 @@ public class ChatBot
 
     public String getHolidayFood(String arg)
     {
-        return holydayFood.get(arg);
+        return holidayFood.get(arg);
     }
 
-    public boolean is_alive()
+    public boolean isAlive()
     {
         return this.alive;
     }
