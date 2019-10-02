@@ -16,7 +16,7 @@ public class Program {
                 result = bot.Commands.get(name).apply(arg);
             else
                 result = "This command is undefined";
-            System.out.print(result + "\n");
+            System.out.print(result);
         }
     }
 }
