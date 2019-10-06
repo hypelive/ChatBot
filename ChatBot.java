@@ -21,29 +21,29 @@ public class ChatBot {
         holidayFood.put("russia day", "borsch");
     }
 
-    public HashMap<String, Command> Commands = new HashMap<>();
+    public HashMap<String, Command> commands = new HashMap<>();
     /*static {
-        Commands = new HashMap<>();
-        Commands.put("echo", Command("repeat your text", echo);
-        Commands.put("getName", getName);
-        Commands.put("help", help);
-        Commands.put("holiday", getHolidayFood);
+        commands = new HashMap<>();
+        commands.put("echo", Command("repeat your text", echo);
+        commands.put("getName", getName);
+        commands.put("help", help);
+        commands.put("holiday", getHolidayFood);
     }*/
 
     public String echo(String txt) {
-        return txt + "\n";
+        return txt;
     }
 
     public String getName(String txt) {
-        return name + "\n";
+        return name;
     }
 
     public String help(String txt) {
         StringBuilder result = new StringBuilder();
-        for (String key : Commands.keySet()) {
+        for (String key : commands.keySet()) {
             result.append(key);
             result.append("- ");
-            result.append(Commands.get(key).description);
+            result.append(commands.get(key).description);
             result.append("\n");
         }
         return result.toString();
@@ -53,12 +53,15 @@ public class ChatBot {
         if (holidayFood.get(arg) == null) {
             StringBuilder str = new StringBuilder();
             str.append("Available variants:\n");
+            int counter = 0;
             for (String holiday : holidayFood.keySet()) {
                 if (holiday.contains(arg)) {
                     str.append(holiday);
                     str.append("\n");
+                    counter += 1;
                 }
             }
+            str.append("summary " + counter + " variants");
             return str.toString();
         } else {
             return holidayFood.get(arg);
@@ -72,10 +75,9 @@ public class ChatBot {
     ChatBot(String name) {
         this.name = name;
         this.alive = true;
-        System.out.print("Yo I'm " + name + "\nAt your service...\n");
-        Commands.put("echo", new Command("repeat your text", this::echo));
-        Commands.put("getName", new Command("get bot name", this::getName));
-        Commands.put("help", new Command("get information about command", this::help));
-        Commands.put("holiday", new Command("gives you information about food for holidays", this::getHolidayFood));
+        commands.put("echo", new Command("repeat your text", this::echo));
+        commands.put("getName", new Command("get bot name", this::getName));
+        commands.put("help", new Command("get information about command", this::help));
+        commands.put("holiday", new Command("gives you information about food for holidays", this::getHolidayFood));
     }
 }

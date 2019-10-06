@@ -11,13 +11,13 @@ public class Program {
             if (inp.length() >= 2)
                 arg = inp.substring(inp.indexOf(" ") + 1);
             String result;
-            if (bot.Commands.containsKey(name)) {
-                result = bot.Commands.get(name).func.apply(arg.toLowerCase());
+            if (bot.commands.containsKey(name)) {
+                result = bot.commands.get(name).func.apply(arg.toLowerCase());
             }
             else {
-                result = "This command is undefined\n";
+                result = "This command is undefined";
             }
-            System.out.print(result);
+            System.out.println(result);
         }
     }
 }
