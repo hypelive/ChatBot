@@ -1,24 +1,30 @@
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.net.*;
+import java.io.*;
 import java.lang.*;
+import java.nio.charset.StandardCharsets;
 
 public class ChatBot {
     private String name;
     private boolean alive;
-    private static HashMap<String, String> holidayFood;
+    private static HashMap<String, Food> holidayFood;
+    //private DataBase dataBase;
 
     static {
         holidayFood = new HashMap<>();
-        holidayFood.put("new year", "olivye it's all of you need");
-        holidayFood.put("birthday", "mashed potatoes with chicken and compote");
-        holidayFood.put("valentine's day", "spaghetti");
-        holidayFood.put("1st september", "cake");
-        holidayFood.put("christmas", "turkey");
-        holidayFood.put("thanksgiving day", "turkey");
-        holidayFood.put("maslenitsa", "pancakes");
-        holidayFood.put("1st may", "pie");
-        holidayFood.put("9st may", "buckwheat with meat");
-        holidayFood.put("1st april", "explosive pie");
-        holidayFood.put("russia day", "borsch");
+        holidayFood.put("new year", new Food("Olivier salad"));
+        holidayFood.put("birthday", new Food("Mashed potato"));
+        holidayFood.put("valentine's day", new Food("Spaghetti"));
+        holidayFood.put("1st september", new Food("Cake"));
+        holidayFood.put("christmas", new Food("Pelmeni"));
+        holidayFood.put("thanksgiving day", new Food("Turkey as food"));
+        holidayFood.put("maslenitsa", new Food("Pancake"));
+        holidayFood.put("1st may", new Food("Pie"));
+        holidayFood.put("9th may", new Food("Porridge"));
+        holidayFood.put("1st april", new Food("Pie"));
+        holidayFood.put("russia day", new Food("Borscht"));
     }
 
     public HashMap<String, Command> commands = new HashMap<>();
@@ -49,9 +55,9 @@ public class ChatBot {
         return result.toString();
     }
 
-    public String getHolidayFood(String arg) {
+    public String getHolidayFood(String arg) { //also we can do Livenstein distance support
+    	StringBuilder str = new StringBuilder();
         if (holidayFood.get(arg) == null) {
-            StringBuilder str = new StringBuilder();
             str.append("Available variants:\n");
             int counter = 0;
             for (String holiday : holidayFood.keySet()) {
@@ -62,14 +68,60 @@ public class ChatBot {
                 }
             }
             str.append("summary " + counter + " variants");
-            return str.toString();
         } else {
-            return holidayFood.get(arg);
+            str.append(holidayFood.get(arg).name);
+            str.append('\n');
+            str.append(getDescription(holidayFood.get(arg)));
         }
+        return str.toString();
     }
 
     public boolean isAlive() {
         return this.alive;
+    }
+
+    public String getDescription(Food food){ // if we have description then ok
+                                            // if we don't have then find it in wiki
+        if (food.description != "")
+            return food.description;
+        
+        StringBuilder description = new StringBuilder();
+        String page = findPageWithDescription(food);
+        Pattern pattern = Pattern.compile("<p>.*?<b>.+?</p>");
+        Matcher matcher = pattern.matcher(page);
+        if (!(matcher.find())){
+        	return "not found";
+        }
+        description.append(page.substring(matcher.start() + 6, matcher.end() - 4).replaceAll("<.+?>", ""));
+        description.append("\n");
+        description.append("you can find recipes here: ");
+        description.append("https://recipebook.io/recipes?key=" + food.name);
+        //dataBase.add(..)
+        
+        return description.toString();
+    }
+    
+    private String findPageWithDescription(Food food) {
+    	URL url;
+    	String page = "";
+    	try {
+        	url = new URL("https://en.wikipedia.org/wiki/" + food.name.replace(' ', '_'));
+        	URLConnection connection = url.openConnection();
+            BufferedReader br = new BufferedReader(
+            		new InputStreamReader(connection.getInputStream()));
+            StringBuilder pageBuffer = new StringBuilder();
+            String inputLine;
+            while ((inputLine = br.readLine()) != null) {
+            	pageBuffer.append(inputLine);
+            }
+            br.close();
+            page = pageBuffer.toString();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e){
+        	e.printStackTrace();
+        }
+    	return page;
     }
 
     ChatBot(String name) {
