@@ -1,14 +1,8 @@
-import java.nio.charset.Charset;
 import java.util.HashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.net.*;
-import java.io.*;
-import java.lang.*;
-import java.nio.charset.StandardCharsets;
 
 public class ChatBot {
     private String name;
+    private String info = "Developed by Kirill and Nikolay\nversion: 0.2b";
     private boolean alive;
     private static HashMap<String, Food> holidayFood;
     //private DataBase dataBase;
@@ -26,6 +20,7 @@ public class ChatBot {
         holidayFood.put("9th may", new Food("Porridge"));
         holidayFood.put("1st april", new Food("Pie"));
         holidayFood.put("russia day", new Food("Borscht"));
+        holidayFood.put("test", new Food("non123"));
     }
 
     public HashMap<String, Command> commands = new HashMap<>();
@@ -43,6 +38,10 @@ public class ChatBot {
 
     public String getName(String txt) {
         return name;
+    }
+    
+    public String getInfo(String txt) {
+        return info;
     }
 
     public String help(String txt) {
@@ -82,53 +81,20 @@ public class ChatBot {
     }
 
     public String getDescription(Food food){ // if we have description then ok
-        // if we don't have then find it in wiki
-        if (!food.description.equals(""))
-            return food.description;
-
-        StringBuilder description = new StringBuilder();
-        String page = findPageWithDescription(food);
-        Pattern pattern = Pattern.compile("<p>.*?<b>.+?</p>");
-        Matcher matcher = pattern.matcher(page);
-        if (!(matcher.find())){
-            return "not found";
+        									// if we don't have then find it in wiki
+        if (food.description.equals("")){
+            food.description = Parser.getDescriptionFromInternet(food.name);
+            food.setInDB();
         }
-        description.append(page.substring(matcher.start(), matcher.end()).replaceAll("<.+?>", ""));
-        description.append("\n");
-        description.append("you can find recipes here: ");
-        description.append("https://recipebook.io/recipes?key=").append(food.name.replaceAll(" ", "%20"));
-        food.description = description.toString();
-        food.setInDB();
-
-        return description.toString();
+        return food.description;
     }
-
-    private String findPageWithDescription(Food food) {
-        URL url;
-        String page = "";
-        try {
-            url = new URL("https://en.wikipedia.org/wiki/" + food.name.replace(' ', '_'));
-            URLConnection connection = url.openConnection();
-            BufferedReader br = new BufferedReader(
-                    new InputStreamReader(connection.getInputStream()));
-            StringBuilder pageBuffer = new StringBuilder();
-            String inputLine;
-            while ((inputLine = br.readLine()) != null) {
-                pageBuffer.append(inputLine);
-            }
-            br.close();
-            page = pageBuffer.toString();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return page;
-    }
-
+    
     ChatBot(String name) {
         this.name = name;
         this.alive = true;
         commands.put("echo", new Command("repeat your text", this::echo));
-        commands.put("getName", new Command("get bot name", this::getName));
+        commands.put("name", new Command("get name of bot", this::getName));
+        commands.put("info", new Command("get information about bot", this::getInfo));
         commands.put("help", new Command("get information about command", this::help));
         commands.put("holiday", new Command("gives you information about food for holidays", this::getHolidayFood));
     }
