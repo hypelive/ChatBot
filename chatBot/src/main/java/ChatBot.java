@@ -39,7 +39,7 @@ public class ChatBot {
     public String getName(String txt) {
         return name;
     }
-    
+
     public String getInfo(String txt) {
         return info;
     }
@@ -81,14 +81,14 @@ public class ChatBot {
     }
 
     public String getDescription(Food food){ // if we have description then ok
-        									// if we don't have then find it in wiki
+        // if we don't have then find it in wiki
         if (food.description.equals("")){
             food.description = Parser.getDescriptionFromInternet(food.name);
-            food.setInDB();
+            DataBase.setInDB(food);
         }
         return food.description;
     }
-    
+
     ChatBot(String name) {
         this.name = name;
         this.alive = true;
