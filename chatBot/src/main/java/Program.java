@@ -10,15 +10,12 @@ public class Program {
             String arg = "";
             if (inp.length() >= 2)
                 arg = inp.substring(inp.indexOf(" ") + 1);
-            String result;
+            String result = "This command is undefined";
             if (bot.commands.containsKey(name)) {
                 result = bot.commands.get(name).func.apply(arg.toLowerCase());
             }
             else if(name.equalsIgnoreCase("telegram")) {
             	TelegramBot.main(new String[0]);  
-            }
-            else {
-                result = "This command is undefined";
             }
             System.out.println(result);
         }

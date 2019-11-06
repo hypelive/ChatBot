@@ -1,14 +1,9 @@
+import org.telegram.telegrambots.ApiContextInitializer;
+import org.telegram.telegrambots.TelegramBotsApi;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.api.objects.Update;
-import org.telegram.telegrambots.api.*;
-import org.telegram.telegrambots.api.objects.Chat;
-import org.telegram.telegrambots.api.objects.User;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 import org.telegram.telegrambots.exceptions.TelegramApiRequestException;
-import org.telegram.telegrambots.extensions.bots.commandbot.commands.BotCommand;
-import org.telegram.telegrambots.extensions.bots.commandbot.*;
-import org.telegram.telegrambots.bots.AbsSender;
-import org.telegram.telegrambots.bots.*;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 
 
@@ -17,13 +12,19 @@ public class TelegramBot extends TelegramLongPollingBot{
 
 	public static void main(String[] args) {
 		ApiContextInitializer.init();
-		bot = new ChatBot("Alex");
+		ChatBot bot = new ChatBot("Alex");
 		TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
 		try {
-			telegramBotsApi.registerBot(TelegramBot.getBot());
+			telegramBotsApi.registerBot(new TelegramBot(bot));
 		} catch (TelegramApiRequestException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public TelegramBot(ChatBot bot)
+	{
+		super();
+		this.bot = bot;
 	}
 
 	@Override
@@ -38,7 +39,7 @@ public class TelegramBot extends TelegramLongPollingBot{
 		String arg = "";
 		if (message.length() >= 2)
 			arg = message.substring(message.indexOf(" ") + 1);
-		String result;
+		String result = "what?";
 		if (bot.commands.containsKey(name)) {
 			result = bot.commands.get(name).func.apply(arg.toLowerCase());
 		}
