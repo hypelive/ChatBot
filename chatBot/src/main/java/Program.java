@@ -14,6 +14,9 @@ public class Program {
             if (bot.commands.containsKey(name)) {
                 result = bot.commands.get(name).func.apply(arg.toLowerCase());
             }
+            else if(name.equalsIgnoreCase("telegram")) {
+            	TelegramBot.main(new String[0]);  
+            }
             else {
                 result = "This command is undefined";
             }
