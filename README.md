@@ -5,3 +5,5 @@
 	+apache
 2nd: 
 	short description for each food from cooking sites
+3rd:
+	integration with telegram
