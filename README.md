@@ -7,3 +7,4 @@
 	short description for each food from cooking sites
 3rd:
 	integration with telegram
+	select language
