@@ -10,9 +10,8 @@ import org.telegram.telegrambots.api.methods.send.SendMessage;
 public class TelegramBot extends TelegramLongPollingBot{
 	ChatBot bot;
 
-	public static void main(String[] args) {
+	public static void main(ChatBot bot) {
 		ApiContextInitializer.init();
-		ChatBot bot = new ChatBot("Alex");
 		TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
 		try {
 			telegramBotsApi.registerBot(new TelegramBot(bot));

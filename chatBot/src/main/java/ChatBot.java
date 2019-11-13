@@ -85,7 +85,7 @@ public class ChatBot {
         return this.alive;
     }
 
-    public String getDescription(Food food){ // if we have description then ok
+    public synchronized String getDescription(Food food){ // if we have description then ok
         // if we don't have then find it in wiki
         if (food.description.equals("")){
             food.description = Parser.getDescriptionFromInternet(food.name);

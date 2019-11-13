@@ -20,7 +20,7 @@ public class Program {
                 result = bot.commands.get(name).func.apply(arg.toLowerCase());
             }
             else if(name.equalsIgnoreCase("telegram")) {
-            	TelegramBot.main(new String[0]);
+            	TelegramBot.main(bot);
             	result = "telegram bot is started";
             }
             System.out.println(result);
