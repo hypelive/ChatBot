@@ -10,7 +10,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DataBase {
-    private static String path = "src\\main\\resources\\DB.txt";
+    private static String path = "DB.txt";
 
     public static void setInDB(Food food) {
         Gson master = new Gson();
@@ -23,7 +23,7 @@ public class DataBase {
         }
     }
 
-    public static Food searchInDB(String name) {
+    public static Food searchInDB(String name) throws IOException {
         Gson master = new Gson();
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(path),
@@ -36,12 +36,14 @@ public class DataBase {
                     continue;
                 }
                 String sName = jsonFood.substring(matcher.start() + 8, matcher.end() - 1);
-                if(name.equals(sName)) {
+                if (name.equals(sName)) {
                     return master.fromJson(jsonFood, Food.class);
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            File file = new File("DB.txt");
+            file.createNewFile();
+            //e.printStackTrace();
         }
         return null;
     }

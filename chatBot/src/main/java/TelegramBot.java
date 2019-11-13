@@ -35,7 +35,7 @@ public class TelegramBot extends TelegramLongPollingBot{
 	@Override
 	public void onUpdateReceived(Update update) {
 		String message = update.getMessage().getText();
-		String name = message.split(" ")[0];
+		String name = message.split(" ")[0].toLowerCase();
 		String arg = "";
 		if (message.length() >= 2)
 			arg = message.substring(message.indexOf(" ") + 1);

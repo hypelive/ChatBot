@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.HashMap;
 
 public class ChatBot {
@@ -7,7 +8,8 @@ public class ChatBot {
     private static HashMap<String, Food> holidayFood;
     //private DataBase dataBase;
 
-    static {
+    static  {
+        try{
         holidayFood = new HashMap<>();
         holidayFood.put("new year", new Food("Olivier salad"));
         holidayFood.put("birthday", new Food("Mashed potato"));
@@ -21,6 +23,9 @@ public class ChatBot {
         holidayFood.put("1st april", new Food("Pie"));
         holidayFood.put("russia day", new Food("Borscht"));
         holidayFood.put("test", new Food("non123"));
+        }catch (IOException e) {
+            System.exit(1);
+        }
     }
 
     public HashMap<String, Command> commands = new HashMap<>();

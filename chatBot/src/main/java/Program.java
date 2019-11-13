@@ -1,3 +1,8 @@
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 public class Program {
@@ -15,7 +20,8 @@ public class Program {
                 result = bot.commands.get(name).func.apply(arg.toLowerCase());
             }
             else if(name.equalsIgnoreCase("telegram")) {
-            	TelegramBot.main(new String[0]);  
+            	TelegramBot.main(new String[0]);
+            	result = "telegram bot is started";
             }
             System.out.println(result);
         }
